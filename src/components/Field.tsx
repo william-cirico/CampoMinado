@@ -8,9 +8,11 @@ type Props = {
     nearMines: number;
     exploded: boolean;
     flagged: boolean;
+    onOpen: VoidFunction;
+    onSelect: VoidFunction;
 }
 
-export function Field({ opened, mined, nearMines, exploded, flagged }: Props) {
+export function Field({ opened, mined, nearMines, exploded, flagged, onOpen, onSelect }: Props) {
     const fieldStyles: StyleProp<ViewStyle> = [styles.field];
 
     // Adicionando os estilos do campo
@@ -28,9 +30,9 @@ export function Field({ opened, mined, nearMines, exploded, flagged }: Props) {
     }
 
     return (
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={onOpen} onLongPress={onSelect}>
             <View style={fieldStyles}>
-                {(!mined && opened && nearMines) && <Text style={[styles.label, { color }]}>{nearMines}</Text>}
+                {(!mined && opened && !!nearMines) && <Text style={[styles.label, { color }]}>{nearMines}</Text>}
                 {(flagged && !opened) && <Flag />}
                 {(mined && opened) && <Mine />}
             </View>
