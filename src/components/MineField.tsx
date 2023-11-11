@@ -5,13 +5,14 @@ type Props = {
     board: any;
 }
 
+
 export function MineField({ board }: Props) {
     const rows = board.map((row, rowIndex) => {
         const columns = row.map((field, fieldIndex) => (
-            <Field {...field} key={fieldIndex} />
+            <Field {...field} key={`field-${fieldIndex}`} />
         ));
 
-        return <View key={rowIndex} style={styles.row}>{columns}</View>
+        return <View key={`row-${rowIndex}`} style={styles.row}>{columns}</View>
     });
 
     return (

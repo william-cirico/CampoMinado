@@ -1,18 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Dimensions } from 'react-native';
 import { Field } from './src/components/Field';
 import { Header } from './src/components/Header';
 import { useState } from 'react';
+import { createMinedBoard } from './src/utils/board';
+import { MineField } from './src/components/MineField';
+
+const getColumnsAmount = () => {
+  const width = Dimensions.get("screen").width;
+  return Math.floor(width / 30);
+};
+
+const getRowsAmount = () => {
+  const height = Dimensions.get("screen").height;
+  const boardHeight = height * (1 - 0.15); // Cálculo de Aspect Ratio = Altura total * (1 - porcentagem da tela)
+  return Math.floor(boardHeight / 30);
+};
 
 export default function App() {
-  const [board, setBoard] = useState();
+  const [board, setBoard] = useState(createMinedBoard(
+    getRowsAmount(),
+    getColumnsAmount(),
+    10));
 
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <Field mined={false} opened nearMines={1} exploded={false} flagged={false} />
-      <Field mined={true} opened nearMines={0} exploded={true} flagged={false} />
-      <Field mined={true} opened={false} nearMines={0} exploded={false} flagged={true} />
+      <MineField board={board} />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
